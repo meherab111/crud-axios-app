@@ -16,7 +16,7 @@ const App = () => {
 
   },[])
 
-  return <h1>react crud op</h1>;
+  return <h1 className={"text-4xl text-center capitalize"}>react crud op</h1>;
 };
 
 export default App;
