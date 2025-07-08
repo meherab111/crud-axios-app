@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
+@theme{
+    --color-dark-gray: #222831;
+    --color-light-beige: #DFD0B8;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   font-style: normal;
+  background-color: var(--color-dark-gray);
 }
