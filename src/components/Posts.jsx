@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { deletePost, getPost } from "../api/PostApi";
+import Form from "./Form";
 
 const Posts = () => {
   const [data, setData] = useState([]);
@@ -38,6 +39,7 @@ const Posts = () => {
 
   return (
     <section className={"container mx-auto px-5 py-9"}>
+      <Form data={data} setData={setData} />
       <ul className={"grid grid-cols-3 gap-10"}>
         {data.map((currElem) => {
           const { id, body, title } = currElem;
