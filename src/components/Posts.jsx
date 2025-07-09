@@ -4,6 +4,7 @@ import Form from "./Form";
 
 const Posts = () => {
   const [data, setData] = useState([]);
+  const [updatedData, setUpdatedData] = useState({})
 
   const getPostData = async () => {
     try {
@@ -37,11 +38,15 @@ const Posts = () => {
     }
   };
 
+  const handleUpdateBtn = (currElem) => {
+    setUpdatedData(currElem)
+  }
+
   return (
     <section className={"container mx-auto px-5 py-9"}>
-      <Form data={data} setData={setData} />
+      <Form data={data} setData={setData} updatedData={updatedData} setUpdatedData={setUpdatedData} />
       <ul className={"grid grid-cols-3 gap-10"}>
-        {data.map((currElem) => {
+        {data.map((currElem, index) => {
           const { id, body, title } = currElem;
 
           return (
@@ -51,7 +56,7 @@ const Posts = () => {
                 "flex flex-col gap-3 border border-light-beige rounded-lg px-4 py-4 shadow-xl/20"
               }
             >
-              <p className={"text-lg text-light-beige capitalize"}>{id}.</p>
+              <p className={"text-lg text-light-beige capitalize"}>{index+1}.</p>
               <p className={"text-md text-light-beige capitalize"}>
                 Title: {title}
               </p>
@@ -63,6 +68,7 @@ const Posts = () => {
                   className={
                     "border border-light-beige rounded-lg px-3 py-2 text-black bg-green-500 cursor-pointer hover:bg-green-400"
                   }
+                  onClick={() => handleUpdateBtn(currElem)}
                 >
                   Edit
                 </button>

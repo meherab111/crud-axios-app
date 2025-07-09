@@ -1,11 +1,22 @@
-import { useState } from "react";
-import { postData } from "../api/PostApi";
+import { useEffect, useState } from "react";
+import { postData, putData } from "../api/PostApi";
 
-const Form = ({ data, setData }) => {
+const Form = ({ data, setData, updatedData, setUpdatedData }) => {
   const [addData, setAddData] = useState({
     title: "",
     body: "",
   });
+
+  useEffect(() => {
+    if (updatedData) {
+      setAddData({
+        title: updatedData.title || "",
+        body: updatedData.body || "",
+      });
+    }
+  }, [updatedData]);
+
+  let changingBtn = Object.keys(updatedData).length === 0;
 
   const handleInputChange = (event) => {
     const name = event.target.name;
@@ -36,9 +47,39 @@ const Form = ({ data, setData }) => {
     }
   };
 
+  const updatePostData = async () => {
+    try {
+      const response = await putData(updatedData.id, addData);
+
+      if (response.status === 200) {
+        setData((prev) => {
+          return prev.map((currElem) => {
+            return currElem.id === response.data.id ? response.data : currElem;
+          });
+        });
+
+        setAddData({
+          title: "",
+          body: "",
+        });
+
+        setUpdatedData({});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    addPostData();
+
+    const action = event.nativeEvent.submitter.value;
+
+    if (action === "Add") {
+      addPostData();
+    } else if (action === "Edit") {
+      updatePostData();
+    }
   };
 
   return (
@@ -82,8 +123,9 @@ const Form = ({ data, setData }) => {
           className={
             "border border-light-beige rounded-lg px-3 py-2 text-black bg-green-500 cursor-pointer hover:bg-green-400"
           }
+          value={changingBtn ? "Add" : "Edit"}
         >
-          Add
+          {changingBtn ? "Add" : "Edit"}
         </button>
       </form>
     </section>
